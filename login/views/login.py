@@ -1,10 +1,11 @@
 import hashlib
+import time
 
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from login.models import User
+from login.models import User, Token
 
 
 class CreateUser(APIView):
@@ -25,6 +26,14 @@ class CreateUser(APIView):
                 "code": status.HTTP_403_FORBIDDEN,
                 "data": {},
                 "msg": "密码为空。"
+            })
+
+        is_exist = User.objects.filter(user=user).exists()
+        if is_exist:
+            return Response({
+                "code": status.HTTP_403_FORBIDDEN,
+                "data": {},
+                "msg": "账号已注册。"
             })
 
         pass_sha = hashlib.sha256(password.encode("utf-8")).hexdigest()
@@ -59,11 +68,20 @@ class Login(APIView):
 
         pass_sha = hashlib.sha256(password.encode("utf-8")).hexdigest()
 
-        is_exist = User.objects.filter(user=user, password=pass_sha).exists()
-        if is_exist:
+        user_obj = User.objects.filter(user=user, password=pass_sha)
+        if user_obj.exists():
+
+            # 生成的token
+            token = hashlib.sha256(str(time.time()).encode("utf-8")).hexdigest()
+            Token.objects.update_or_create(user=user_obj.first(), defaults={
+                "token": token
+            })
+
             return Response({
                 "code": status.HTTP_200_OK,
-                "data": {},
+                "data": {
+                    "token": token,
+                },
                 "msg": "操作成功。"
             })
 
