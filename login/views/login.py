@@ -68,7 +68,7 @@ class Login(APIView):
 
         pass_sha = hashlib.sha256(password.encode("utf-8")).hexdigest()
 
-        user_obj = User.objects.filter(user=user, password=pass_sha)
+        user_obj = User.objects.filter(user=user, password=pass_sha, is_delete=False)
         if user_obj.exists():
 
             # 生成的token
