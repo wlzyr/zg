@@ -19,4 +19,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('user/login/', include("login.urls")),
+    path('home/', include("home.urls")),
 ]

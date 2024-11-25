@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+from home.models import Channel
+
 
 # Create your models here.
 
@@ -10,6 +12,8 @@ class User(models.Model):
     password = models.CharField(max_length=100, verbose_name="密码")
     create_date = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
     is_delete = models.BooleanField(default=False, verbose_name="是否删除")
+    key = models.CharField(max_length=100, verbose_name="密钥", default='')
+    user_channel = models.ManyToManyField(Channel, verbose_name="用户频道")
 
 
 class Token(models.Model):
