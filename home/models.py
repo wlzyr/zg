@@ -6,6 +6,7 @@ from django.db import models
 class Channel(models.Model):
     channel_id = models.CharField(max_length=100, verbose_name="频道ID")
     channel_name = models.CharField(max_length=100, verbose_name="频道名称")
+    key = models.CharField(max_length=100, verbose_name="密钥", default='')
 
     def create_channel(self, channel_name):
         channel_id = time.time()
