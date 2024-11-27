@@ -22,4 +22,4 @@ class Token(models.Model):
 
     @property
     def is_expired(self):
-        return self.created_at < timezone.now() - timezone.timedelta(days=7)
+        return self.update_date < timezone.now() - timezone.timedelta(days=7)
