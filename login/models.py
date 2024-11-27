@@ -18,7 +18,7 @@ class User(models.Model):
 class Token(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="用户")
     token = models.CharField(max_length=100, verbose_name="token")
-    created_at = models.DateTimeField(default=timezone.now)
+    update_date = models.DateTimeField(auto_now=True, verbose_name="更新时间")
 
     @property
     def is_expired(self):
